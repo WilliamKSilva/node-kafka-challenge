@@ -1,7 +1,14 @@
+import { IAddUserUseCase } from '../../domain/usecases/add-user'
 import { HttpRequest, HttpResponse, IController } from '../protocols/http'
 import { MissingFieldError } from '../utils/missing-field-error'
 
 export class SignUpController implements IController {
+  private readonly addUserUseCase: IAddUserUseCase
+
+  constructor (addUserUseCase: IAddUserUseCase) {
+    this.addUserUseCase = addUserUseCase
+  }
+
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     if (!httpRequest.body.email) {
       return {
@@ -23,6 +30,8 @@ export class SignUpController implements IController {
         body: new MissingFieldError('password')
       }
     }
+
+    await this.addUserUseCase.add(httpRequest.body)
 
     return {
       code: 200,
