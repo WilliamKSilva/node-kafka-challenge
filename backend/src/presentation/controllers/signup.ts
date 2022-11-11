@@ -10,6 +10,13 @@ export class SignUpController implements IController {
       }
     }
 
+    if (!httpRequest.body.name) {
+      return {
+        code: 400,
+        body: new MissingFieldError('name')
+      }
+    }
+
     return {
       code: 200,
       body: {}
