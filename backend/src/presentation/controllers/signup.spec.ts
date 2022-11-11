@@ -110,4 +110,26 @@ describe('SignUp Controller', () => {
 
     expect(addUserUseCaseSpy).toHaveBeenCalledWith(httpRequest.body)
   })
+
+  it('Should return an User on success', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest = {
+      body: {
+        email: 'test@test.com',
+        password: 'test12345',
+        name: 'test'
+      }
+    }
+
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.code).toBe(200)
+    expect(httpResponse.body).toEqual({
+      id: 'id_test',
+      name: 'test',
+      email: 'test@test.com',
+      password: 'test12345'
+    })
+  })
 })
