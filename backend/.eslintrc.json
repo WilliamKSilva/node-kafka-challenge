@@ -8,8 +8,10 @@
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
+        "project": "**/tsconfig.json",
         "sourceType": "module"
     },
     "rules": {
+        "@typescript-eslint/strict-boolean-expressions": "off"
     }
 }
