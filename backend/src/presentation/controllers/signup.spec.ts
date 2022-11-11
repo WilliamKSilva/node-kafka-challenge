@@ -10,6 +10,22 @@ const makeSut = () => {
 }
 
 describe('SignUp Controller', () => {
+  it('Should call handle method with the right data', async () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'test',
+        email: 'test@test.com',
+        password: 'test12345'
+      }
+    }
+
+    const sutSpy = jest.spyOn(sut, 'handle')
+    await sut.handle(httpRequest)
+
+    expect(sutSpy).toHaveBeenCalledWith(httpRequest)
+  })
+
   it('Should check if email field is not empty', async () => {
     const { sut } = makeSut()
 
