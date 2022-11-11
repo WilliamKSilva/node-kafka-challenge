@@ -31,11 +31,11 @@ export class SignUpController implements IController {
       }
     }
 
-    await this.addUserUseCase.add(httpRequest.body)
+    const user = await this.addUserUseCase.add(httpRequest.body)
 
     return {
       code: 200,
-      body: {}
+      body: user
     }
   }
 }
