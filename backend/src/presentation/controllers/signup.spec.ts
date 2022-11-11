@@ -1,11 +1,31 @@
+import { UserModel } from '../../domain/models/user'
+import { IAddUserData, IAddUserUseCase } from '../../domain/usecases/add-user'
 import { MissingFieldError } from '../utils/missing-field-error'
 import { SignUpController } from './signup'
 
+const makeAddUserUseCaseStub = () => {
+  class AddUserUseCaseStub implements IAddUserUseCase {
+    async add (data: IAddUserData): Promise<UserModel> {
+      return {
+        id: 'id_test',
+        name: 'test',
+        email: 'test@test.com',
+        password: 'test12345'
+      }
+    }
+  }
+
+  return new AddUserUseCaseStub()
+}
+
 const makeSut = () => {
-  const sut = new SignUpController()
+  const addUserUseCaseStub = makeAddUserUseCaseStub()
+
+  const sut = new SignUpController(addUserUseCaseStub)
 
   return {
-    sut
+    sut,
+    addUserUseCaseStub
   }
 }
 
@@ -72,5 +92,22 @@ describe('SignUp Controller', () => {
 
     expect(httpResponse.code).toBe(400)
     expect(httpResponse.body).toEqual(new MissingFieldError('password'))
+  })
+
+  it('Should call AddUserUseCase with the right data', async () => {
+    const { sut, addUserUseCaseStub } = makeSut()
+
+    const httpRequest = {
+      body: {
+        email: 'test@test.com',
+        password: 'test12345',
+        name: 'test'
+      }
+    }
+
+    const addUserUseCaseSpy = jest.spyOn(addUserUseCaseStub, 'add')
+    await sut.handle(httpRequest)
+
+    expect(addUserUseCaseSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 })
