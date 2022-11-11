@@ -41,4 +41,20 @@ describe('SignUp Controller', () => {
     expect(httpResponse.code).toBe(400)
     expect(httpResponse.body).toEqual(new MissingFieldError('name'))
   })
+
+  it('Should check if password field is not empty', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest = {
+      body: {
+        email: 'test@test.com',
+        name: 'test'
+      }
+    }
+
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.code).toBe(400)
+    expect(httpResponse.body).toEqual(new MissingFieldError('password'))
+  })
 })
