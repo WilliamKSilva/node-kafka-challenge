@@ -1,9 +1,15 @@
 import { UserModel } from '../../domain/models/user'
 import { IAddUserData, IAddUserUseCase } from '../../domain/usecases/add-user'
+import { IController } from '../protocols/http'
 import { MissingFieldError } from '../utils/missing-field-error'
 import { SignUpController } from './signup'
 
-const makeAddUserUseCaseStub = () => {
+interface IMakeSut {
+  sut: IController
+  addUserUseCaseStub: IAddUserUseCase
+}
+
+const makeAddUserUseCaseStub = (): IAddUserUseCase => {
   class AddUserUseCaseStub implements IAddUserUseCase {
     async add (data: IAddUserData): Promise<UserModel> {
       return {
@@ -18,7 +24,7 @@ const makeAddUserUseCaseStub = () => {
   return new AddUserUseCaseStub()
 }
 
-const makeSut = () => {
+const makeSut = (): IMakeSut => {
   const addUserUseCaseStub = makeAddUserUseCaseStub()
 
   const sut = new SignUpController(addUserUseCaseStub)
