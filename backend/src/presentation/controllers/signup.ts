@@ -17,6 +17,13 @@ export class SignUpController implements IController {
       }
     }
 
+    if (!httpRequest.body.password) {
+      return {
+        code: 400,
+        body: new MissingFieldError('password')
+      }
+    }
+
     return {
       code: 200,
       body: {}
