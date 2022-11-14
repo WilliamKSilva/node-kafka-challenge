@@ -85,7 +85,7 @@ describe('AddUserUseCase', () => {
 
     const addUserData = {
       name: 'test',
-      password: 'test_hash',
+      password: 'test',
       email: 'test@test.com'
     }
 
