@@ -19,6 +19,6 @@
     "typescript": "*"
   },
   "scripts": {
-    "test": "jest"
+    "test:unit": "jest --watch -c jest-unit-config.js"
   }
 }
