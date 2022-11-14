@@ -17,17 +17,12 @@ export class AddUserUseCase implements IAddUserUseCase {
 
     const hashedPassword = await this.encrypter.encrypt(password)
 
-    const user = this.userRepository.add({
+    const user = await this.userRepository.add({
       name,
       email,
       password: hashedPassword
     })
 
-    return await new Promise(resolve => resolve({
-      id: 'id',
-      name: 'teste',
-      email: 'test@test.com',
-      password: 'test12345'
-    }))
+    return null
   }
 }
