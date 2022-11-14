@@ -1,9 +1,9 @@
 import { BcryptAdapter } from './bcrypt-adapter'
 import bcrypt from 'bcrypt'
-import { Encrypter } from '../../application/protocols/encrypter'
+import { IEncrypter } from '../../application/protocols/encrypter'
 
 interface IMakeSut {
-  sut: Encrypter
+  sut: IEncrypter
 }
 
 jest.mock('bcrypt', () => ({
