@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  mongo-kafka-challenge-test:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=docker-test
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=mongo-kafka-challenge-test
+    expose:
+      - "27020"
+    ports:
+      - "27020:27017"
+    volumes:
+      - mongo-kafka-challenge-test:/data/db
+
+volumes:
+  mongo-kafka-challenge-test:
