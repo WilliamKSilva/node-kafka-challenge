@@ -40,4 +40,14 @@ describe('BcryptAdapter', () => {
 
     await expect(promise).rejects.toThrow()
   })
+
+  it('Should return an hashed password on success', async () => {
+    const { sut } = makeSut()
+
+    const password = 'test12345'
+
+    const hashed = await sut.encrypt(password)
+
+    expect(hashed).toBe('test_hashed')
+  })
 })
