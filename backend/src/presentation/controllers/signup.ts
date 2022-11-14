@@ -1,4 +1,4 @@
-import { IAddUserUseCase } from '../../domain/usecases/add-user'
+import { IAddUserUseCase } from '../../domain/usecases/user/add-user'
 import { HttpRequest, HttpResponse, IController } from '../protocols/http'
 import { MissingFieldError } from '../utils/missing-field-error'
 
