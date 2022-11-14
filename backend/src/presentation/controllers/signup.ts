@@ -1,6 +1,6 @@
 import { IAddUserUseCase } from '../../domain/usecases/user/add-user'
 import { HttpRequest, HttpResponse, IController } from '../protocols/http'
-import { MissingFieldError } from '../utils/missing-field-error'
+import { MissingFieldError } from '../errors/missing-field-error'
 
 export class SignUpController implements IController {
   private readonly addUserUseCase: IAddUserUseCase
