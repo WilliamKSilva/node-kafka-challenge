@@ -113,4 +113,23 @@ describe('AddUserUseCase', () => {
 
     await expect(promise).rejects.toThrow()
   })
+
+  it('Should return an user on success', async () => {
+    const { sut } = makeSut()
+
+    const addUserData = {
+      name: 'test',
+      password: 'test_hash',
+      email: 'test@test.com'
+    }
+
+    const user = await sut.add(addUserData)
+
+    expect(user).toEqual({
+      id: 'id',
+      name: 'test',
+      email: 'test@test.com',
+      password: 'test_hash'
+    })
+  })
 })
