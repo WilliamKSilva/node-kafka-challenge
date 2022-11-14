@@ -1,7 +1,5 @@
 import { UserModel } from '../../../../domain/models/user'
 import { IAddUserData, IAddUserUseCase } from '../../../../domain/usecases/user/add-user'
-import { MongoUserRepository } from '../../../../infra/mongo/user-repository'
-import { BcryptAdapter } from '../../../../infra/utils/bcrypt-adapter'
 import { IEncrypter } from '../../../protocols/encrypter'
 import { IUserRepository } from '../../../repositories/user-repository'
 import { AddUserUseCase } from '../../user/add-user'
