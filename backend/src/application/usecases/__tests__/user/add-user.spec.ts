@@ -1,4 +1,6 @@
-import { IAddUserUseCase } from '../../../../domain/usecases/user/add-user'
+import { UserModel } from '../../../../domain/models/user'
+import { IAddUserData, IAddUserUseCase } from '../../../../domain/usecases/user/add-user'
+import { MongoUserRepository } from '../../../../infra/mongo/user-repository'
 import { BcryptAdapter } from '../../../../infra/utils/bcrypt-adapter'
 import { IEncrypter } from '../../../protocols/encrypter'
 import { IUserRepository } from '../../../repositories/user-repository'
@@ -10,13 +12,40 @@ interface IMakeSut {
   userRepository: IUserRepository
 }
 
+const makeEncrypterStub = (): IEncrypter => {
+  class EncrypterStub implements IEncrypter {
+    async encrypt (password: string): Promise<string> {
+      return await new Promise(resolve => resolve('test_hash'))
+    }
+  }
+
+  return new EncrypterStub()
+}
+
+const makeUserRepositoryStub = (): IUserRepository => {
+  class UserRepositoryStub implements IUserRepository {
+    async add (data: IAddUserData): Promise<UserModel> {
+      return await new Promise(resolve => resolve({
+        id: 'id',
+        email: 'test@test.com',
+        name: 'test',
+        password: 'test_hash'
+      }))
+    }
+  }
+
+  return new UserRepositoryStub()
+}
+
 const makeSut = (): IMakeSut => {
-  const encrypter = new BcryptAdapter()
-  const sut = new AddUserUseCase(encrypter)
+  const encrypter = makeEncrypterStub()
+  const userRepository = makeUserRepositoryStub()
+  const sut = new AddUserUseCase(encrypter, userRepository)
 
   return {
     sut,
-    encrypter
+    encrypter,
+    userRepository
   }
 }
 
@@ -52,17 +81,21 @@ describe('AddUserUseCase', () => {
   })
 
   it('Should call user repository with right data', async () => {
-    const { sut } = makeSut()
+    const { sut, userRepository } = makeSut()
 
     const addUserData = {
       name: 'test',
-      password: 'test12345',
+      password: 'test_hash',
       email: 'test@test.com'
     }
 
-    jest.spyOn(encrypter, 'encrypt').mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
-    const promise = sut.add(addUserData)
+    const userRepositorySpy = jest.spyOn(userRepository, 'add')
+    await sut.add(addUserData)
 
-    await expect(promise).rejects.toThrow()
+    expect(userRepositorySpy).toHaveBeenCalledWith({
+      name: 'test',
+      password: 'test_hash',
+      email: 'test@test.com'
+    })
   })
 })
