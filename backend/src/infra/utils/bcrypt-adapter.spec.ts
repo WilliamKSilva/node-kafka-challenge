@@ -1,5 +1,10 @@
 import { BcryptAdapter } from './bcrypt-adapter'
 import bcrypt from 'bcrypt'
+import { Encrypter } from '../../application/protocols/encrypter'
+
+interface IMakeSut {
+  sut: Encrypter
+}
 
 jest.mock('bcrypt', () => ({
   async hash (password: string): Promise<string> {
@@ -7,7 +12,7 @@ jest.mock('bcrypt', () => ({
   }
 }))
 
-const makeSut = () => {
+const makeSut = (): IMakeSut => {
   const sut = new BcryptAdapter()
 
   return {
