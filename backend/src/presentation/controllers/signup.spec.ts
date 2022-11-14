@@ -1,7 +1,7 @@
 import { UserModel } from '../../domain/models/user'
 import { IAddUserData, IAddUserUseCase } from '../../domain/usecases/user/add-user'
 import { IController } from '../protocols/http'
-import { MissingFieldError } from '../utils/missing-field-error'
+import { MissingFieldError } from '../errors/missing-field-error'
 import { SignUpController } from './signup'
 
 interface IMakeSut {
