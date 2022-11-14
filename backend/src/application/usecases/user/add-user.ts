@@ -23,6 +23,6 @@ export class AddUserUseCase implements IAddUserUseCase {
       password: hashedPassword
     })
 
-    return null
+    return user
   }
 }
