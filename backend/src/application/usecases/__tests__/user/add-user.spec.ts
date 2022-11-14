@@ -98,4 +98,19 @@ describe('AddUserUseCase', () => {
       email: 'test@test.com'
     })
   })
+
+  it('Should throws if user repository throws', async () => {
+    const { sut, userRepository } = makeSut()
+
+    const addUserData = {
+      name: 'test',
+      password: 'test_hash',
+      email: 'test@test.com'
+    }
+
+    jest.spyOn(userRepository, 'add').mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const promise = sut.add(addUserData)
+
+    await expect(promise).rejects.toThrow()
+  })
 })
