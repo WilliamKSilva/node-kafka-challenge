@@ -48,6 +48,20 @@ describe('AddUserUseCase', () => {
     expect(userRepositorySpy).toHaveBeenCalledWith(addUserData.email)
   })
 
+  it('Should return null if user already exists', async () => {
+    const { sut } = makeSut()
+
+    const addUserData = {
+      name: 'test',
+      password: 'test12345',
+      email: 'test@test.com'
+    }
+
+    const user = await sut.add(addUserData)
+
+    expect(user).toBeFalsy()
+  })
+
   it('Should call encrypter with the right data', async () => {
     const { sut, encrypter, userRepository } = makeSut()
 
