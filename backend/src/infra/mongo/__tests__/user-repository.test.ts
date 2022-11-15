@@ -16,7 +16,7 @@ describe('UserRepository', () => {
   })
 
   it('Should create an user', async () => {
-    const user: UserModel = {
+    const userData: UserModel = {
       id: '',
       email: 'test@test.com',
       name: 'test',
@@ -24,9 +24,9 @@ describe('UserRepository', () => {
     }
 
     const usersCollection = await MongoHelper.getCollection('users')
-    const inserted = await usersCollection.insertOne(user)
+    const inserted = await usersCollection.insertOne(userData)
 
-    user.id = inserted.insertedId.toJSON()
+    const user = Object.assign({}, userData, { id: inserted.insertedId })
 
     expect(user.id).toBeTruthy()
     expect(user.name).toBe('test')
