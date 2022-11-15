@@ -28,12 +28,21 @@ describe('Find User By Email UseCase', () => {
     expect(userRepositorySpy).toHaveBeenCalledWith('test@test.com')
   })
 
-  it('Should throws if user repository thros', async () => {
+  it('Should throws if user repository throws', async () => {
     const { sut, userRepositoryStub } = makeSut()
 
     jest.spyOn(userRepositoryStub, 'find').mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
     const promise = sut.find('test@test.com')
 
     await expect(promise).rejects.toThrow()
+  })
+
+  it('Should return null if user does not exists', async () => {
+    const { sut, userRepositoryStub } = makeSut()
+
+    jest.spyOn(userRepositoryStub, 'find').mockResolvedValueOnce(new Promise(resolve => resolve(null)))
+    const user = await sut.find('test@test.com')
+
+    expect(user).toBeFalsy()
   })
 })
