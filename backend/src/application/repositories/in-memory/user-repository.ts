@@ -1,6 +1,5 @@
 import { UserModel } from '../../../domain/models/user'
 import { IAddUserData } from '../../../domain/usecases/user/add-user'
-import { IFindUserByEmailData } from '../../../domain/usecases/user/find-user-by-email'
 import { IUserRepository } from '../user-repository'
 
 export const mockedUserModel: UserModel = {
@@ -15,7 +14,7 @@ export class UserRepositoryInMemory implements IUserRepository {
     return mockedUserModel
   }
 
-  async find (data: IFindUserByEmailData): Promise<UserModel> {
+  async findByEmail (email: string): Promise<UserModel> {
     return mockedUserModel
   }
 }

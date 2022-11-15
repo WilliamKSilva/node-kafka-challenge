@@ -15,6 +15,8 @@ export class AddUserUseCase implements IAddUserUseCase {
   async add (data: IAddUserData): Promise<UserModel> {
     const { name, email, password } = data
 
+    const userAlreadyExists = await this.userRepository.findByEmail(email)
+
     const hashedPassword = await this.encrypter.encrypt(password)
 
     const user = await this.userRepository.add({
