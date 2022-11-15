@@ -1,7 +1,7 @@
 
 export class InternalServerError extends Error {
-  constructor () {
-    super('Internal Server Error')
+  constructor (error: string) {
+    super(`Internal Server Error: ${error}`)
     this.name = 'InternalServerError'
   }
 }
