@@ -17,6 +17,10 @@ export class AddUserUseCase implements IAddUserUseCase {
 
     const userAlreadyExists = await this.userRepository.findByEmail(email)
 
+    if (userAlreadyExists) {
+      return null
+    }
+
     const hashedPassword = await this.encrypter.encrypt(password)
 
     const user = await this.userRepository.add({
