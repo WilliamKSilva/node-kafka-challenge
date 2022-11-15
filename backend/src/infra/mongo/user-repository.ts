@@ -6,16 +6,16 @@ import { MongoHelper } from '../helpers/mongo-helper'
 export class MongoUserRepository implements IUserRepository {
   async add (data: IAddUserData): Promise<UserModel> {
     const usersCollection = (await MongoHelper.getCollection('users'))
-    const user: UserModel = {
+    const userData: UserModel = {
       id: '',
       name: data.name,
       email: data.email,
       password: data.password
     }
 
-    const inserted = await usersCollection.insertOne(user)
+    const inserted = await usersCollection.insertOne(data)
 
-    user.id = inserted.insertedId.toJSON()
+    const user = Object.assign({}, userData, { id: inserted.insertedId.toJSON() })
 
     return user
   }
