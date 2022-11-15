@@ -5,7 +5,8 @@ export interface HttpResponse {
 }
 
 export interface HttpRequest {
-  body: any
+  body?: any
+  params?: any
 }
 
 export interface IController {
