@@ -1,6 +1,6 @@
-import { UserModel } from '../../../../domain/models/user'
-import { IAddUserData, IAddUserUseCase } from '../../../../domain/usecases/user/add-user'
+import { IAddUserUseCase } from '../../../../domain/usecases/user/add-user'
 import { IEncrypter } from '../../../protocols/encrypter'
+import { UserRepositoryInMemory } from '../../../repositories/in-memory/user-repository'
 import { IUserRepository } from '../../../repositories/user-repository'
 import { AddUserUseCase } from '../../user/add-user'
 
@@ -20,24 +20,9 @@ const makeEncrypterStub = (): IEncrypter => {
   return new EncrypterStub()
 }
 
-const makeUserRepositoryStub = (): IUserRepository => {
-  class UserRepositoryStub implements IUserRepository {
-    async add (data: IAddUserData): Promise<UserModel> {
-      return await new Promise(resolve => resolve({
-        id: 'id',
-        email: 'test@test.com',
-        name: 'test',
-        password: 'test_hash'
-      }))
-    }
-  }
-
-  return new UserRepositoryStub()
-}
-
 const makeSut = (): IMakeSut => {
   const encrypter = makeEncrypterStub()
-  const userRepository = makeUserRepositoryStub()
+  const userRepository = new UserRepositoryInMemory()
   const sut = new AddUserUseCase(encrypter, userRepository)
 
   return {
