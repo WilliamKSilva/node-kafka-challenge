@@ -10,7 +10,7 @@ export class FindUserByEmailUseCase implements IFindUserByEmailUseCase {
   }
 
   async find (data: IFindUserByEmailData): Promise<UserModel> {
-    const user = this.userRepository.find(data)
+    const user = await this.userRepository.find(data)
 
     return null
   }
