@@ -2,6 +2,7 @@ import { IAddUserUseCase } from '../../domain/usecases/user/add-user'
 import { HttpRequest, HttpResponse, IController } from '../protocols/http'
 import { MissingFieldError } from '../errors/missing-field-error'
 import { InternalServerError } from '../errors/internal-server-error'
+import { UserAlreadyExistsError } from '../errors/forbiden-error'
 
 export class SignUpController implements IController {
   private readonly addUserUseCase: IAddUserUseCase
@@ -33,11 +34,18 @@ export class SignUpController implements IController {
         }
       }
 
-      const user = await this.addUserUseCase.add(httpRequest.body)
+      const createdUser = await this.addUserUseCase.add(httpRequest.body)
+
+      if (!createdUser) {
+        return {
+          code: 400,
+          body: new UserAlreadyExistsError()
+        }
+      }
 
       return {
         code: 200,
-        body: user
+        body: createdUser
       }
     } catch (error) {
       return {
