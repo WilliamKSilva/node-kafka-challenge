@@ -1,6 +1,7 @@
 import { IAddUserUseCase } from '../../domain/usecases/user/add-user'
 import { HttpRequest, HttpResponse, IController } from '../protocols/http'
 import { MissingFieldError } from '../errors/missing-field-error'
+import { InternalServerError } from '../errors/internal-server-error'
 
 export class SignUpController implements IController {
   private readonly addUserUseCase: IAddUserUseCase
@@ -10,32 +11,39 @@ export class SignUpController implements IController {
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    if (!httpRequest.body.email) {
-      return {
-        code: 400,
-        body: new MissingFieldError('email')
+    try {
+      if (!httpRequest.body.email) {
+        return {
+          code: 400,
+          body: new MissingFieldError('email')
+        }
       }
-    }
 
-    if (!httpRequest.body.name) {
-      return {
-        code: 400,
-        body: new MissingFieldError('name')
+      if (!httpRequest.body.name) {
+        return {
+          code: 400,
+          body: new MissingFieldError('name')
+        }
       }
-    }
 
-    if (!httpRequest.body.password) {
-      return {
-        code: 400,
-        body: new MissingFieldError('password')
+      if (!httpRequest.body.password) {
+        return {
+          code: 400,
+          body: new MissingFieldError('password')
+        }
       }
-    }
 
-    const user = await this.addUserUseCase.add(httpRequest.body)
+      const user = await this.addUserUseCase.add(httpRequest.body)
 
-    return {
-      code: 200,
-      body: user
+      return {
+        code: 200,
+        body: user
+      }
+    } catch (error) {
+      return {
+        code: 500,
+        body: new InternalServerError(error)
+      }
     }
   }
 }
