@@ -24,6 +24,6 @@
   "scripts": {
     "dev": "sucrase-node src/main/server.ts",
     "test:unit": "jest --watch -c jest-unit-config.js",
-    "test:integration": "jest jest-integration-config.js"
+    "test:integration": "jest -c jest-integration-config.js"
   }
 }
