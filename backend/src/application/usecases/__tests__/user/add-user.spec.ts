@@ -33,8 +33,8 @@ const makeSut = (): IMakeSut => {
 }
 
 describe('AddUserUseCase', () => {
-  it('Should call encrypter with the right data', async () => {
-    const { sut, encrypter } = makeSut()
+  it('Should call user repository find by email method with right data', async () => {
+    const { sut, userRepository } = makeSut()
 
     const addUserData = {
       name: 'test',
@@ -42,6 +42,22 @@ describe('AddUserUseCase', () => {
       email: 'test@test.com'
     }
 
+    const userRepositorySpy = jest.spyOn(userRepository, 'findByEmail')
+    await sut.add(addUserData)
+
+    expect(userRepositorySpy).toHaveBeenCalledWith(addUserData.email)
+  })
+
+  it('Should call encrypter with the right data', async () => {
+    const { sut, encrypter, userRepository } = makeSut()
+
+    const addUserData = {
+      name: 'test',
+      password: 'test12345',
+      email: 'test@test.com'
+    }
+
+    jest.spyOn(userRepository, 'findByEmail').mockResolvedValueOnce(new Promise(resolve => resolve(null)))
     const encrypterSpy = jest.spyOn(encrypter, 'encrypt')
     await sut.add(addUserData)
 
@@ -49,7 +65,7 @@ describe('AddUserUseCase', () => {
   })
 
   it('Should throws if encrypter throws', async () => {
-    const { sut, encrypter } = makeSut()
+    const { sut, encrypter, userRepository } = makeSut()
 
     const addUserData = {
       name: 'test',
@@ -57,13 +73,14 @@ describe('AddUserUseCase', () => {
       email: 'test@test.com'
     }
 
+    jest.spyOn(userRepository, 'findByEmail').mockResolvedValueOnce(new Promise(resolve => resolve(null)))
     jest.spyOn(encrypter, 'encrypt').mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
     const promise = sut.add(addUserData)
 
     await expect(promise).rejects.toThrow()
   })
 
-  it('Should call user repository with right data', async () => {
+  it('Should call user repository add method with right data', async () => {
     const { sut, userRepository } = makeSut()
 
     const addUserData = {
@@ -72,6 +89,7 @@ describe('AddUserUseCase', () => {
       email: 'test@test.com'
     }
 
+    jest.spyOn(userRepository, 'findByEmail').mockResolvedValueOnce(new Promise(resolve => resolve(null)))
     const userRepositorySpy = jest.spyOn(userRepository, 'add')
     await sut.add(addUserData)
 
@@ -91,6 +109,7 @@ describe('AddUserUseCase', () => {
       email: 'test@test.com'
     }
 
+    jest.spyOn(userRepository, 'findByEmail').mockResolvedValueOnce(new Promise(resolve => resolve(null)))
     jest.spyOn(userRepository, 'add').mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
     const promise = sut.add(addUserData)
 
@@ -98,7 +117,7 @@ describe('AddUserUseCase', () => {
   })
 
   it('Should return an user on success', async () => {
-    const { sut } = makeSut()
+    const { sut, userRepository } = makeSut()
 
     const addUserData = {
       name: 'test',
@@ -106,6 +125,7 @@ describe('AddUserUseCase', () => {
       email: 'test@test.com'
     }
 
+    jest.spyOn(userRepository, 'findByEmail').mockResolvedValueOnce(new Promise(resolve => resolve(null)))
     const user = await sut.add(addUserData)
 
     expect(user).toEqual({
