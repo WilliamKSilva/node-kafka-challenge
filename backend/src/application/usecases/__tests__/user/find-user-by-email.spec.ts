@@ -1,5 +1,5 @@
 import { IFindUserByEmailUseCase } from '../../../../domain/usecases/user/find-user-by-email'
-import { UserRepositoryInMemory } from '../../../repositories/in-memory/user-repository'
+import { mockedUserModel, UserRepositoryInMemory } from '../../../repositories/in-memory/user-repository'
 import { IUserRepository } from '../../../repositories/user-repository'
 import { FindUserByEmailUseCase } from '../../user/find-user-by-email'
 
@@ -44,5 +44,13 @@ describe('Find User By Email UseCase', () => {
     const user = await sut.find('test@test.com')
 
     expect(user).toBeFalsy()
+  })
+
+  it('Should return an user on success', async () => {
+    const { sut } = makeSut()
+
+    const user = await sut.find('test@test.com')
+
+    expect(user).toEqual(mockedUserModel)
   })
 })
