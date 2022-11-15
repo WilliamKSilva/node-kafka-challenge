@@ -15,6 +15,6 @@ export class FindUserByEmailUseCase implements IFindUserByEmailUseCase {
       return null
     }
 
-    return null
+    return user
   }
 }

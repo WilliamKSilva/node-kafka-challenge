@@ -3,7 +3,7 @@ import { IAddUserData } from '../../../domain/usecases/user/add-user'
 import { IFindUserByEmailData } from '../../../domain/usecases/user/find-user-by-email'
 import { IUserRepository } from '../user-repository'
 
-const mockedUserModel: UserModel = {
+export const mockedUserModel: UserModel = {
   id: 'id',
   name: 'test',
   email: 'test@test.com',
