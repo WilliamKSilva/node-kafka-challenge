@@ -62,4 +62,19 @@ describe('GetUserController', () => {
     expect(httpResponse.code).toBe(500)
     expect(httpResponse.body).toEqual(new InternalServerError())
   })
+
+  it('Should return an user on success', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest = {
+      params: {
+        id: 'id'
+      }
+    }
+
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.code).toBe(200)
+    expect(httpResponse.body).toEqual(mockedUserModel)
+  })
 })
