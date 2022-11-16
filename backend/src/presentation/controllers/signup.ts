@@ -50,7 +50,7 @@ export class SignUpController implements IController {
     } catch (error) {
       return {
         code: 500,
-        body: new InternalServerError(error)
+        body: new InternalServerError()
       }
     }
   }
