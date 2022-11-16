@@ -9,8 +9,8 @@ interface IMakeSut {
   updateUserUseCase: IUpdateUserUseCase
 }
 
-const makeUpdateUserUseCase = (): IUpdateUserUseCase => {
-  class UpdateUserUseCase implements IUpdateUserUseCase {
+const makeUpdateUserUseCaseStub = (): IUpdateUserUseCase => {
+  class UpdateUserUseCaseStub implements IUpdateUserUseCase {
     async update (data: IAddUserData): Promise<UserModel> {
       return {
         id: 'id_test',
@@ -21,11 +21,11 @@ const makeUpdateUserUseCase = (): IUpdateUserUseCase => {
     }
   }
 
-  return new UpdateUserUseCase()
+  return new UpdateUserUseCaseStub()
 }
 
 const makeSut = (): IMakeSut => {
-  const updateUserUseCase = makeUpdateUserUseCase()
+  const updateUserUseCase = makeUpdateUserUseCaseStub()
 
   const sut = new UpdateUserController(updateUserUseCase)
 
@@ -50,5 +50,24 @@ describe('SignUp Controller', () => {
     await sut.handle(httpRequest)
 
     expect(sutSpy).toHaveBeenCalledWith(httpRequest)
+  })
+
+  it('Should call UpdateUserUseCase with the right data', async () => {
+    const { sut, updateUserUseCase } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'test',
+        email: 'test@test.com',
+        password: 'test12345'
+      },
+      params: {
+        id: 'id_test'
+      }
+    }
+
+    const updateUserUseCaseSpy = jest.spyOn(updateUserUseCase, 'update')
+    await sut.handle(httpRequest)
+
+    expect(updateUserUseCaseSpy).toHaveBeenCalledWith(httpRequest.body, httpRequest.params)
   })
 })
