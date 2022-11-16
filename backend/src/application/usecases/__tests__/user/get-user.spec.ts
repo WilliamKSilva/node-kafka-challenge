@@ -1,5 +1,5 @@
 import { IGetUserUseCase } from '../../../../domain/usecases/user/get-user'
-import { UserRepositoryInMemory } from '../../../repositories/in-memory/user-repository'
+import { mockedUserModel, UserRepositoryInMemory } from '../../../repositories/in-memory/user-repository'
 import { IUserRepository } from '../../../repositories/user-repository'
 import { GetUserUseCase } from '../../user/get-user'
 
@@ -19,7 +19,7 @@ const makeSut = (): IMakeSut => {
 }
 
 describe('GetUserUseCase', () => {
-  it('Should call user repsository with right data', async () => {
+  it('Should call user repository with right data', async () => {
     const { sut, userRepository } = makeSut()
 
     const id = 'id'
@@ -50,5 +50,15 @@ describe('GetUserUseCase', () => {
     const user = await sut.find(id)
 
     expect(user).toBeFalsy()
+  })
+
+  it('Should return an user on success', async () => {
+    const { sut } = makeSut()
+
+    const id = 'id'
+
+    const user = await sut.find(id)
+
+    expect(user).toEqual(mockedUserModel)
   })
 })
