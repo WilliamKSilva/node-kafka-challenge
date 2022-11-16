@@ -1,6 +1,7 @@
 import { mockedUserModel } from '../../application/repositories/in-memory/user-repository'
 import { UserModel } from '../../domain/models/user'
 import { IGetUserUseCase } from '../../domain/usecases/user/get-user'
+import { InternalServerError } from '../errors/internal-server-error'
 import { GetUserController } from './get-user'
 
 interface IMakeSut {
@@ -42,5 +43,23 @@ describe('GetUserController', () => {
     await sut.handle(httpRequest)
 
     expect(getUserUseCaseSpy).toHaveBeenCalledWith('id')
+  })
+
+  it('Should return an error if get user use case throws', async () => {
+    const { sut, getUserUseCaseStub } = makeSut()
+
+    const httpRequest = {
+      params: {
+        id: 'id'
+      }
+    }
+
+    jest.spyOn(getUserUseCaseStub, 'find').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.code).toBe(500)
+    expect(httpResponse.body).toEqual(new InternalServerError())
   })
 })
