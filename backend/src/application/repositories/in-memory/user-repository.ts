@@ -17,4 +17,8 @@ export class UserRepositoryInMemory implements IUserRepository {
   async findByEmail (email: string): Promise<UserModel> {
     return mockedUserModel
   }
+
+  async findById (id: string): Promise<UserModel> {
+    return mockedUserModel
+  }
 }
