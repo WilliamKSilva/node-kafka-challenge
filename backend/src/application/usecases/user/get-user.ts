@@ -12,6 +12,10 @@ export class GetUserUseCase implements IGetUserUseCase {
   async find (id: string): Promise<UserModel> {
     const user = await this.userRepository.findById(id)
 
+    if (!user) {
+      return null
+    }
+
     return null
   }
 }
