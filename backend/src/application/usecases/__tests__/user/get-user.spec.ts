@@ -29,4 +29,15 @@ describe('GetUserUseCase', () => {
 
     expect(userRepositorySpy).toHaveBeenCalledWith('id')
   })
+
+  it('Should throws if user repsository throws', async () => {
+    const { sut, userRepository } = makeSut()
+
+    const id = 'id'
+
+    jest.spyOn(userRepository, 'findById').mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const promise = sut.find(id)
+
+    await expect(promise).rejects.toThrow()
+  })
 })
