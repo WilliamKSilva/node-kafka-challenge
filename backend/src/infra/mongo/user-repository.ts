@@ -36,8 +36,6 @@ export class MongoUserRepository implements IUserRepository {
       return null
     }
 
-    console.log(mongoUser._id.toJSON())
-
     Object.assign(user, mongoUser, { id: mongoUser._id.toJSON() })
 
     return user

@@ -48,6 +48,8 @@ export class SignUpController implements IController {
         body: createdUser
       }
     } catch (error) {
+      console.log(error)
+
       return {
         code: 500,
         body: new InternalServerError()
