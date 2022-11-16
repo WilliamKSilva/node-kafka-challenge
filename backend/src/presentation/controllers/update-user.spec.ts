@@ -70,4 +70,23 @@ describe('SignUp Controller', () => {
 
     expect(updateUserUseCaseSpy).toHaveBeenCalledWith(httpRequest.body, httpRequest.params)
   })
+
+  it('Should throws if UpdateUserUseCase throws', async () => {
+    const { sut, updateUserUseCase } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'test',
+        email: 'test@test.com',
+        password: 'test12345'
+      },
+      params: {
+        id: 'id_test'
+      }
+    }
+
+    jest.spyOn(updateUserUseCase, 'update').mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const promise = sut.handle(httpRequest)
+
+    await expect(promise).rejects.toThrow()
+  })
 })
