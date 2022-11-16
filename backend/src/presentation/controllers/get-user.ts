@@ -1,4 +1,5 @@
 import { IGetUserUseCase } from '../../domain/usecases/user/get-user'
+import { InternalServerError } from '../errors/internal-server-error'
 import { HttpRequest, HttpResponse, IController } from '../protocols/http'
 
 export class GetUserController implements IController {
@@ -9,10 +10,17 @@ export class GetUserController implements IController {
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const { id } = httpRequest.params
+    try {
+      const { id } = httpRequest.params
 
-    const user = await this.getUserUseCase.find(id)
+      const user = await this.getUserUseCase.find(id)
 
-    return null
+      return null
+    } catch (error) {
+      return {
+        code: 500,
+        body: new InternalServerError()
+      }
+    }
   }
 }
