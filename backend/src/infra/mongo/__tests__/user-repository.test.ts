@@ -38,12 +38,6 @@ describe('UserRepository', () => {
 
   it('Should find an user on findById method', async () => {
     const usersCollection = await MongoHelper.getCollection('users')
-    const user: UserModel = {
-      id: '',
-      name: '',
-      password: '',
-      email: ''
-    }
 
     const _id = new ObjectId(createdUserId)
 
@@ -51,7 +45,9 @@ describe('UserRepository', () => {
       _id
     })
 
-    Object.assign(user, mongoUser, { id: mongoUser._id })
+    const { _id: objectId, ...userObject } = mongoUser
+
+    const user = Object.assign({}, userObject as UserModel, { id: mongoUser._id.toJSON() })
 
     expect(user.id).toBeTruthy()
     expect(user.name).toBe('test')
@@ -61,18 +57,14 @@ describe('UserRepository', () => {
 
   it('Should find a user on findByEmail method', async () => {
     const usersCollection = await MongoHelper.getCollection('users')
-    const user: UserModel = {
-      id: '',
-      name: '',
-      password: '',
-      email: ''
-    }
 
     const email = 'test@test.com'
 
     const mongoUser = await usersCollection.findOne({ email })
 
-    Object.assign(user, mongoUser, { id: mongoUser._id })
+    const { _id: objectId, ...userObject } = mongoUser
+
+    const user = Object.assign({}, userObject as UserModel, { id: mongoUser._id.toJSON() })
 
     expect(user.id).toBeTruthy()
     expect(user.name).toBe('test')
