@@ -21,6 +21,21 @@ export class MongoUserRepository implements IUserRepository {
     return user
   }
 
+  async findByEmail (email: string): Promise<UserModel> {
+    const usersCollection = await MongoHelper.getCollection('users')
+    const user: UserModel = {
+      id: '',
+      name: '',
+      password: '',
+      email: ''
+    }
+    const mongoUser = await usersCollection.findOne({ email })
+
+    Object.assign(user, mongoUser, { id: mongoUser._id })
+
+    return user
+  }
+
   async findById (id: string): Promise<UserModel> {
     const usersCollection = await MongoHelper.getCollection('users')
     const user: UserModel = {
