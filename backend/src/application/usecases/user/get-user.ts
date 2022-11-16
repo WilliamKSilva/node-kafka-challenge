@@ -16,6 +16,6 @@ export class GetUserUseCase implements IGetUserUseCase {
       return null
     }
 
-    return null
+    return user
   }
 }
