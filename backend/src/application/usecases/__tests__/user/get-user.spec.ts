@@ -40,4 +40,15 @@ describe('GetUserUseCase', () => {
 
     await expect(promise).rejects.toThrow()
   })
+
+  it('Should return null if user does not exists', async () => {
+    const { sut, userRepository } = makeSut()
+
+    const id = 'id'
+
+    jest.spyOn(userRepository, 'findById').mockResolvedValueOnce(new Promise((resolve, reject) => resolve(null)))
+    const user = await sut.find(id)
+
+    expect(user).toBeFalsy()
+  })
 })
