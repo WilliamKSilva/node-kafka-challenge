@@ -58,4 +58,25 @@ describe('UserRepository', () => {
     expect(user.email).toBe('test@test.com')
     expect(user.password).toBe('test_hash')
   })
+
+  it('Should find a user on findByEmail method', async () => {
+    const usersCollection = await MongoHelper.getCollection('users')
+    const user: UserModel = {
+      id: '',
+      name: '',
+      password: '',
+      email: ''
+    }
+
+    const email = 'test@test.com'
+
+    const mongoUser = await usersCollection.findOne({ email })
+
+    Object.assign(user, mongoUser, { id: mongoUser._id })
+
+    expect(user.id).toBeTruthy()
+    expect(user.name).toBe('test')
+    expect(user.email).toBe('test@test.com')
+    expect(user.password).toBe('test_hash')
+  })
 })
