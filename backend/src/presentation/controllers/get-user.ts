@@ -15,7 +15,10 @@ export class GetUserController implements IController {
 
       const user = await this.getUserUseCase.find(id)
 
-      return null
+      return {
+        code: 200,
+        body: user
+      }
     } catch (error) {
       return {
         code: 500,
