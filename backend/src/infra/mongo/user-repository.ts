@@ -29,9 +29,16 @@ export class MongoUserRepository implements IUserRepository {
       password: '',
       email: ''
     }
+
     const mongoUser = await usersCollection.findOne({ email })
 
-    Object.assign(user, mongoUser, { id: mongoUser._id })
+    if (!mongoUser) {
+      return null
+    }
+
+    console.log(mongoUser._id.toJSON())
+
+    Object.assign(user, mongoUser, { id: mongoUser._id.toJSON() })
 
     return user
   }
@@ -49,7 +56,7 @@ export class MongoUserRepository implements IUserRepository {
 
     const mongoUser = await usersCollection.findOne({ _id })
 
-    Object.assign(user, mongoUser, { id: mongoUser._id })
+    Object.assign(user, mongoUser, { id: mongoUser._id.toJSON() })
 
     return user
   }
