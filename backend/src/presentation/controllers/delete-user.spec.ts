@@ -35,4 +35,20 @@ describe('DeleteUserController', () => {
 
     expect(deleteUserUseCaseSpy).toHaveBeenCalledWith('id')
   })
+
+  it('Should throws if DeleteUserUseCase throws', async () => {
+    const { sut, deleteUserUseCase } = makeSut()
+
+    const httpRequest = {
+      params: {
+        id: 'id'
+      }
+    }
+
+    jest.spyOn(deleteUserUseCase, 'delete').mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
+
+    const promise = sut.handle(httpRequest)
+
+    await expect(promise).rejects.toThrow()
+  })
 })
