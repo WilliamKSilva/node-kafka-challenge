@@ -3,7 +3,7 @@ import { IAddUserData, IAddUserUseCase } from '../../domain/usecases/user/add-us
 import { IController } from '../protocols/http'
 import { MissingFieldError } from '../errors/missing-field-error'
 import { SignUpController } from './signup'
-import { UserAlreadyExistsError } from '../errors/forbiden-error'
+import { UserAlreadyExistsError } from '../errors/user-already-exists-error'
 
 interface IMakeSut {
   sut: IController

@@ -2,7 +2,7 @@ import { IAddUserUseCase } from '../../domain/usecases/user/add-user'
 import { HttpRequest, HttpResponse, IController } from '../protocols/http'
 import { MissingFieldError } from '../errors/missing-field-error'
 import { InternalServerError } from '../errors/internal-server-error'
-import { UserAlreadyExistsError } from '../errors/forbiden-error'
+import { UserAlreadyExistsError } from '../errors/user-already-exists-error'
 
 export class SignUpController implements IController {
   private readonly addUserUseCase: IAddUserUseCase
