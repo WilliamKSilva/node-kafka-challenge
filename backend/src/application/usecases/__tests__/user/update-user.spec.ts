@@ -1,7 +1,7 @@
 
 import { IUpdateUserUseCase } from '../../../../domain/usecases/user/update-user'
 import { UserNotFoundError } from '../../../../presentation/errors/user-not-found-error'
-import { UserRepositoryInMemory } from '../../../repositories/in-memory/user-repository'
+import { mockedUserModel, UserRepositoryInMemory } from '../../../repositories/in-memory/user-repository'
 import { IUserRepository } from '../../../repositories/user-repository'
 import { UpdateUserUseCase } from '../../user/update-user'
 
@@ -104,5 +104,21 @@ describe('UpdateUserUseCase', () => {
     const promise = sut.update(userData, userId)
 
     await expect(promise).rejects.toThrow()
+  })
+
+  it('Should return an user on success', async () => {
+    const { sut } = makeSut()
+
+    const userData = {
+      name: 'test',
+      email: 'test@test.com',
+      password: 'test12345'
+    }
+
+    const userId = 'id'
+
+    const user = await sut.update(userData, userId)
+
+    expect(user).toEqual(mockedUserModel)
   })
 })
