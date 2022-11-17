@@ -1,0 +1,18 @@
+import { IDeleteUserUseCase } from '../../domain/usecases/user/delete-user'
+import { HttpRequest, HttpResponse, IController } from '../protocols/http'
+
+export class DeleteUserController implements IController {
+  private readonly deleteUserUseCase: IDeleteUserUseCase
+
+  constructor (deleteUserUseCase: IDeleteUserUseCase) {
+    this.deleteUserUseCase = deleteUserUseCase
+  }
+
+  async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+    const { id } = httpRequest.params
+
+    await this.deleteUserUseCase.delete(id)
+
+    return null
+  }
+}
