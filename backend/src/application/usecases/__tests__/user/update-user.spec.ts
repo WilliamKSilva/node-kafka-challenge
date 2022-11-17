@@ -71,4 +71,21 @@ describe('UpdateUserUseCase', () => {
 
     await expect(promise).rejects.toThrow()
   })
+
+  it('Should throws if user repository update method throws', async () => {
+    const { sut, userRepository } = makeSut()
+
+    const userData = {
+      name: 'test',
+      email: 'test@test.com',
+      password: 'test12345'
+    }
+
+    const userId = 'id'
+
+    jest.spyOn(userRepository, 'update').mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const promise = sut.update(userData, userId)
+
+    await expect(promise).rejects.toThrow()
+  })
 })
