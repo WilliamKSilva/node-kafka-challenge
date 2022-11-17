@@ -92,4 +92,24 @@ describe('SignUp Controller', () => {
     expect(httpResponse.code).toBe(500)
     expect(httpResponse.body).toEqual(new InternalServerError())
   })
+
+  it('Should return 401 if user was not found', async () => {
+    const { sut, updateUserUseCase } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'test',
+        email: 'test@test.com',
+        password: 'test12345'
+      },
+      params: {
+        id: 'id_test'
+      }
+    }
+
+    jest.spyOn(updateUserUseCase, 'update').mockResolvedValueOnce(new Promise((resolve, reject) => reject(new UserNotFoundError())))
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.code).toBe(401)
+    expect(httpResponse.body).toEqual(new UserNotFoundError())
+  })
 })
