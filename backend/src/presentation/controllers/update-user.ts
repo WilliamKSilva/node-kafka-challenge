@@ -16,6 +16,13 @@ export class UpdateUserController implements IController {
 
       return null
     } catch (error) {
+      if (error instanceof UserNotFoundError) {
+        return {
+          code: 401,
+          body: new UserNotFoundError()
+        }
+      }
+
       return {
         code: 500,
         body: new InternalServerError()
