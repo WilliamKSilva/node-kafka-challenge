@@ -65,14 +65,25 @@ export class MongoUserRepository implements IUserRepository {
 
     const _id = new ObjectId(userId)
 
-    const mongoUser = await usersCollection.updateOne({ _id }, {
-      $set: fields
+    await usersCollection.updateOne({ _id }, {
+      $set: {
+        ...fields
+      }
     })
+
+    const mongoUser = await usersCollection.findOne({ _id })
+
+    const user: UserModel = {
+      id: mongoUser._id.toJSON(),
+      name: mongoUser.name,
+      email: mongoUser.email,
+      password: mongoUser.password
+    }
 
     if (!mongoUser) {
       return null
     }
 
-    return null
+    return user
   }
 }
