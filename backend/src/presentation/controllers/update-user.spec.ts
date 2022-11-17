@@ -1,3 +1,4 @@
+import { mockedUserModel } from '../../application/repositories/in-memory/user-repository'
 import { UserModel } from '../../domain/models/user'
 import { IAddUserData } from '../../domain/usecases/user/add-user'
 import { IUpdateUserUseCase } from '../../domain/usecases/user/update-user'
@@ -15,10 +16,10 @@ const makeUpdateUserUseCaseStub = (): IUpdateUserUseCase => {
   class UpdateUserUseCaseStub implements IUpdateUserUseCase {
     async update (data: IAddUserData): Promise<UserModel> {
       return {
-        id: 'id_test',
+        id: 'id',
         name: 'test',
         email: 'test@test.com',
-        password: 'test12345'
+        password: 'test_hash'
       }
     }
   }
@@ -111,5 +112,24 @@ describe('SignUp Controller', () => {
 
     expect(httpResponse.code).toBe(401)
     expect(httpResponse.body).toEqual(new UserNotFoundError())
+  })
+
+  it('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'test',
+        email: 'test@test.com',
+        password: 'test12345'
+      },
+      params: {
+        id: 'id_test'
+      }
+    }
+
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.code).toBe(200)
+    expect(httpResponse.body).toEqual(mockedUserModel)
   })
 })
