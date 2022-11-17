@@ -1,6 +1,7 @@
 import { UserModel } from '../../domain/models/user'
 import { IAddUserData } from '../../domain/usecases/user/add-user'
 import { IUpdateUserUseCase } from '../../domain/usecases/user/update-user'
+import { UserNotFoundError } from '../errors/user-not-found-error'
 import { IController } from '../protocols/http'
 import { UpdateUserController } from './update-user'
 
@@ -88,5 +89,25 @@ describe('SignUp Controller', () => {
     const promise = sut.handle(httpRequest)
 
     await expect(promise).rejects.toThrow()
+  })
+
+  it('Should throws an error if user does not exists', async () => {
+    const { sut, updateUserUseCase } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'test',
+        email: 'test@test.com',
+        password: 'test12345'
+      },
+      params: {
+        id: 'id_test'
+      }
+    }
+
+    jest.spyOn(updateUserUseCase, 'update').mockResolvedValueOnce(new Promise((resolve, reject) => resolve(null)))
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.code).toBe(401)
+    expect(httpResponse.body).toEqual(new UserNotFoundError())
   })
 })
