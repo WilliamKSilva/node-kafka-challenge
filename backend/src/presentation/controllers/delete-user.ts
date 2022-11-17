@@ -13,6 +13,9 @@ export class DeleteUserController implements IController {
 
     await this.deleteUserUseCase.delete(id)
 
-    return null
+    return {
+      code: 204,
+      body: null
+    }
   }
 }
