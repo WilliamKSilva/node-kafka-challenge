@@ -1,4 +1,5 @@
 import { IUpdateUserUseCase } from '../../domain/usecases/user/update-user'
+import { InternalServerError } from '../errors/internal-server-error'
 import { UserNotFoundError } from '../errors/user-not-found-error'
 import { HttpRequest, HttpResponse, IController } from '../protocols/http'
 
@@ -10,15 +11,15 @@ export class UpdateUserController implements IController {
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const user = await this.updateUserUseCase.update(httpRequest.body, httpRequest.params)
+    try {
+      const user = await this.updateUserUseCase.update(httpRequest.body, httpRequest.params)
 
-    if (!user) {
+      return null
+    } catch (error) {
       return {
-        code: 401,
-        body: new UserNotFoundError()
+        code: 500,
+        body: new InternalServerError()
       }
     }
-
-    return null
   }
 }
