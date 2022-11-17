@@ -71,4 +71,33 @@ describe('UserRepository', () => {
     expect(user.email).toBe('test@test.com')
     expect(user.password).toBe('test_hash')
   })
+
+  it('Should update a user on update method', async () => {
+    const usersCollection = await MongoHelper.getCollection('users')
+
+    const userData = {
+      name: 'test',
+      email: 'test@test.com',
+      password: 'test'
+    }
+
+    const _id = new ObjectId(createdUserId)
+
+    await usersCollection.updateOne({ _id }, {
+      $set: {
+        ...userData
+      }
+    })
+
+    const mongoUser = await usersCollection.findOne({ _id })
+
+    const user: UserModel = {
+      id: mongoUser._id.toJSON(),
+      name: mongoUser.name,
+      email: mongoUser.email,
+      password: mongoUser.password
+    }
+
+    expect(user).toMatchObject(userData)
+  })
 })
