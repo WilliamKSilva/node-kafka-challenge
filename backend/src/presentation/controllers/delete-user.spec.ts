@@ -1,4 +1,5 @@
 import { IDeleteUserUseCase } from '../../domain/usecases/user/delete-user'
+import { InternalServerError } from '../errors/internal-server-error'
 import { DeleteUserController } from './delete-user'
 
 const makeDeleteUserUseCaseStub = () => {
@@ -36,7 +37,7 @@ describe('DeleteUserController', () => {
     expect(deleteUserUseCaseSpy).toHaveBeenCalledWith('id')
   })
 
-  it('Should throws if DeleteUserUseCase throws', async () => {
+  it('Should return 500 if DeleteUserUseCase throws', async () => {
     const { sut, deleteUserUseCase } = makeSut()
 
     const httpRequest = {
@@ -47,9 +48,10 @@ describe('DeleteUserController', () => {
 
     jest.spyOn(deleteUserUseCase, 'delete').mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
 
-    const promise = sut.handle(httpRequest)
+    const httpResponse = await sut.handle(httpRequest)
 
-    await expect(promise).rejects.toThrow()
+    expect(httpResponse.code).toBe(500)
+    expect(httpResponse.body).toEqual(new InternalServerError())
   })
 
   it('Should return 204 if user is deleted', async () => {
