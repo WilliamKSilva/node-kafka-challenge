@@ -14,7 +14,10 @@ export class UpdateUserController implements IController {
     try {
       const user = await this.updateUserUseCase.update(httpRequest.body, httpRequest.params)
 
-      return null
+      return {
+        code: 200,
+        body: user
+      }
     } catch (error) {
       if (error instanceof UserNotFoundError) {
         return {
