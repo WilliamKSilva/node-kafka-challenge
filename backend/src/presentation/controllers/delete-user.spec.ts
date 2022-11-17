@@ -51,4 +51,19 @@ describe('DeleteUserController', () => {
 
     await expect(promise).rejects.toThrow()
   })
+
+  it('Should return 204 if user is deleted', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest = {
+      params: {
+        id: 'id'
+      }
+    }
+
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.code).toBe(204)
+    expect(httpResponse.body).toBeFalsy()
+  })
 })
