@@ -2,6 +2,7 @@ import { ObjectId } from 'mongodb'
 import { IUserRepository } from '../../application/repositories/user-repository'
 import { UserModel } from '../../domain/models/user'
 import { IAddUserData } from '../../domain/usecases/user/add-user'
+import { IUpdateUserData } from '../../domain/usecases/user/update-user'
 import { MongoHelper } from '../helpers/mongo-helper'
 
 export class MongoUserRepository implements IUserRepository {
@@ -56,5 +57,22 @@ export class MongoUserRepository implements IUserRepository {
     const user = Object.assign(userObject, userObject as UserModel, { id: mongoUser._id.toJSON() })
 
     return user
+  }
+
+  async update (data: IUpdateUserData, userId: string): Promise<UserModel> {
+    const usersCollection = await MongoHelper.getCollection('users')
+    const { ...fields } = data
+
+    const _id = new ObjectId(userId)
+
+    const mongoUser = await usersCollection.updateOne({ _id }, {
+      $set: fields
+    })
+
+    if (!mongoUser) {
+      return null
+    }
+
+    return null
   }
 }
