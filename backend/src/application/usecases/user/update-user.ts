@@ -19,6 +19,6 @@ export class UpdateUserUseCase implements IUpdateUserUseCase {
 
     const user = await this.userRepository.update(data, userId)
 
-    return null
+    return user
   }
 }
