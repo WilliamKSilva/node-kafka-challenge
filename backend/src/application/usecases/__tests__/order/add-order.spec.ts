@@ -32,4 +32,18 @@ describe('AddOrderUseCase', () => {
 
     expect(orderRepositorySpy).toHaveBeenCalledWith(orderData)
   })
+
+  it('Should throws if order repository throws', async () => {
+    const { sut, orderRepository } = makeSut()
+
+    const orderData = {
+      name: 'test',
+      description: 'test'
+    }
+
+    jest.spyOn(orderRepository, 'add').mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const promise = sut.add(orderData)
+
+    await expect(promise).rejects.toThrow()
+  })
 })
