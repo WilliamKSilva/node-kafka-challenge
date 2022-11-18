@@ -1,4 +1,4 @@
-import { OrderModel } from '../../../../domain/models/order'
+import { OrderModel, Status } from '../../../../domain/models/order'
 import { IAddOrderData, IAddOrderUseCase } from '../../../../domain/usecases/order/add-order'
 import { InternalServerError } from '../../../errors/internal-server-error'
 import { MissingFieldError } from '../../../errors/missing-field-error'
@@ -11,6 +11,7 @@ const makeAddOrderUseCaseStub = (): IAddOrderUseCase => {
       return await new Promise((resolve, reject) => resolve({
         id: 'id',
         name: 'test',
+        status: Status.pending,
         description: 'test'
       }))
     }
@@ -108,6 +109,7 @@ describe('CreateUserController', () => {
     expect(httpResponse.code).toBe(200)
     expect(httpResponse.body).toEqual({
       id: 'id',
+      status: Status.pending,
       name: 'test',
       description: 'test'
     })
