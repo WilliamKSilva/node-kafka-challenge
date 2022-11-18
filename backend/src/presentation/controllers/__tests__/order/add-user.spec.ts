@@ -76,4 +76,19 @@ describe('CreateUserController', () => {
 
     expect(addOrderUseCaseSpy).toHaveBeenCalledWith(httpRequest.body)
   })
+
+  it('Should throws if AddOrderUseCase throws', async () => {
+    const { sut, addOrderUseCase } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'test',
+        description: 'test'
+      }
+    }
+
+    jest.spyOn(addOrderUseCase, 'add').mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const promise = sut.handle(httpRequest)
+
+    await expect(promise).rejects.toThrow()
+  })
 })
