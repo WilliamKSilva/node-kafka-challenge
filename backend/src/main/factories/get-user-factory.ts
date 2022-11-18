@@ -1,6 +1,6 @@
 import { GetUserUseCase } from '../../application/usecases/user/get-user'
 import { MongoUserRepository } from '../../infra/mongo/user-repository'
-import { GetUserController } from '../../presentation/controllers/get-user'
+import { GetUserController } from '../../presentation/controllers/user/get-user'
 import { IController } from '../../presentation/protocols/http'
 
 export const makeGetUserController = (): IController => {

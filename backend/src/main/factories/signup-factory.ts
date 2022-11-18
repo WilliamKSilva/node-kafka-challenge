@@ -1,7 +1,7 @@
 import { AddUserUseCase } from '../../application/usecases/user/add-user'
 import { MongoUserRepository } from '../../infra/mongo/user-repository'
 import { BcryptAdapter } from '../../infra/utils/bcrypt-adapter'
-import { SignUpController } from '../../presentation/controllers/signup'
+import { SignUpController } from '../../presentation/controllers/user/signup'
 import { IController } from '../../presentation/protocols/http'
 
 export const makeSignUpHandler = (): IController => {

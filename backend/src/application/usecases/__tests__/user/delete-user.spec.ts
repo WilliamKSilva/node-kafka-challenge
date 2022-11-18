@@ -1,7 +1,14 @@
+import { IDeleteUserUseCase } from '../../../../domain/usecases/user/delete-user'
 import { UserRepositoryInMemory } from '../../../repositories/in-memory/user-repository'
+import { IUserRepository } from '../../../repositories/user-repository'
 import { DeleteUserUseCase } from '../../user/delete-user'
 
-const makeSut = () => {
+interface IMakeSut {
+  userRepository: IUserRepository
+  sut: IDeleteUserUseCase
+}
+
+const makeSut = (): IMakeSut => {
   const userRepository = new UserRepositoryInMemory()
   const sut = new DeleteUserUseCase(userRepository)
 
