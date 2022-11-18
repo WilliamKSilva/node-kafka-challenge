@@ -1,6 +1,6 @@
-import { IDeleteUserUseCase } from '../../domain/usecases/user/delete-user'
-import { InternalServerError } from '../errors/internal-server-error'
-import { HttpRequest, HttpResponse, IController } from '../protocols/http'
+import { IDeleteUserUseCase } from '../../../domain/usecases/user/delete-user'
+import { InternalServerError } from '../../errors/internal-server-error'
+import { HttpRequest, HttpResponse, IController } from '../../protocols/http'
 
 export class DeleteUserController implements IController {
   private readonly deleteUserUseCase: IDeleteUserUseCase

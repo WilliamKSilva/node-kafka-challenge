@@ -1,8 +1,13 @@
-import { IDeleteUserUseCase } from '../../domain/usecases/user/delete-user'
-import { InternalServerError } from '../errors/internal-server-error'
-import { DeleteUserController } from './delete-user'
+import { IDeleteUserUseCase } from '../../../domain/usecases/user/delete-user'
+import { InternalServerError } from '../../errors/internal-server-error'
+import { DeleteUserController } from '../user/delete-user'
 
-const makeDeleteUserUseCaseStub = () => {
+interface IMakeSut {
+  deleteUserUseCase: IDeleteUserUseCase
+  sut: DeleteUserController
+}
+
+const makeDeleteUserUseCaseStub = (): IDeleteUserUseCase => {
   class DeleteUserUseCaseStub implements IDeleteUserUseCase {
     async delete (userId: string): Promise<void> {}
   }
@@ -10,7 +15,7 @@ const makeDeleteUserUseCaseStub = () => {
   return new DeleteUserUseCaseStub()
 }
 
-const makeSut = () => {
+const makeSut = (): IMakeSut => {
   const deleteUserUseCase = makeDeleteUserUseCaseStub()
   const sut = new DeleteUserController(deleteUserUseCase)
 

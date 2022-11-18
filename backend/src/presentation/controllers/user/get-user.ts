@@ -1,6 +1,6 @@
-import { IGetUserUseCase } from '../../domain/usecases/user/get-user'
-import { InternalServerError } from '../errors/internal-server-error'
-import { HttpRequest, HttpResponse, IController } from '../protocols/http'
+import { IGetUserUseCase } from '../../../domain/usecases/user/get-user'
+import { InternalServerError } from '../../errors/internal-server-error'
+import { HttpRequest, HttpResponse, IController } from '../../protocols/http'
 
 export class GetUserController implements IController {
   private readonly getUserUseCase: IGetUserUseCase

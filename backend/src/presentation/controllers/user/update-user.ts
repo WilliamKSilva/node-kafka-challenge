@@ -1,7 +1,7 @@
-import { IUpdateUserUseCase } from '../../domain/usecases/user/update-user'
-import { InternalServerError } from '../errors/internal-server-error'
-import { UserNotFoundError } from '../errors/user-not-found-error'
-import { HttpRequest, HttpResponse, IController } from '../protocols/http'
+import { IUpdateUserUseCase } from '../../../domain/usecases/user/update-user'
+import { InternalServerError } from '../../errors/internal-server-error'
+import { UserNotFoundError } from '../../errors/user-not-found-error'
+import { HttpRequest, HttpResponse, IController } from '../../protocols/http'
 
 export class UpdateUserController implements IController {
   private readonly updateUserUseCase: IUpdateUserUseCase

@@ -1,11 +1,11 @@
-import { mockedUserModel } from '../../application/repositories/in-memory/user-repository'
-import { UserModel } from '../../domain/models/user'
-import { IAddUserData } from '../../domain/usecases/user/add-user'
-import { IUpdateUserUseCase } from '../../domain/usecases/user/update-user'
-import { InternalServerError } from '../errors/internal-server-error'
-import { UserNotFoundError } from '../errors/user-not-found-error'
-import { IController } from '../protocols/http'
-import { UpdateUserController } from './update-user'
+import { mockedUserModel } from '../../../application/repositories/in-memory/user-repository'
+import { UserModel } from '../../../domain/models/user'
+import { IAddUserData } from '../../../domain/usecases/user/add-user'
+import { IUpdateUserUseCase } from '../../../domain/usecases/user/update-user'
+import { InternalServerError } from '../../errors/internal-server-error'
+import { UserNotFoundError } from '../../errors/user-not-found-error'
+import { IController } from '../../protocols/http'
+import { UpdateUserController } from '../user/update-user'
 
 interface IMakeSut {
   sut: IController
