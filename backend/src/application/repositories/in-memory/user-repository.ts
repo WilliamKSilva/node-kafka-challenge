@@ -26,4 +26,8 @@ export class UserRepositoryInMemory implements IUserRepository {
   async update (data: IUpdateUserData, userId: string): Promise<UserModel> {
     return mockedUserModel
   }
+
+  async delete (userId: string): Promise<void> {
+
+  }
 }

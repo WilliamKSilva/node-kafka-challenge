@@ -7,4 +7,5 @@ export interface IUserRepository {
   findByEmail: (email: string) => Promise<UserModel>
   findById: (id: string) => Promise<UserModel>
   update: (data: IUpdateUserData, userId: string) => Promise<UserModel>
+  delete: (userId: string) => Promise<void>
 }
