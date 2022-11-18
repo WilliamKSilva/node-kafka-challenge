@@ -12,6 +12,6 @@ export class AddOrderUseCase implements IAddOrderUseCase {
   async add (data: IAddOrderData): Promise<OrderModel> {
     const order = await this.orderRepository.add(data)
 
-    return null
+    return order
   }
 }

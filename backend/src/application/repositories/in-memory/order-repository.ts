@@ -2,7 +2,7 @@ import { OrderModel, Status } from '../../../domain/models/order'
 import { IAddOrderData } from '../../../domain/usecases/order/add-order'
 import { IOrderRepository } from '../order-repository'
 
-const mockOrder = {
+export const mockOrder = {
   id: 'id',
   name: 'test',
   description: 'test',
