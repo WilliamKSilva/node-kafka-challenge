@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { Express, Router } from 'express'
+import { makeDeleteUserController } from './factories/delete-user-factory'
 import { makeGetUserController } from './factories/get-user-factory'
 import { makeSignUpHandler } from './factories/signup-factory'
 import { makeUpdateUserController } from './factories/update-user-factory'
@@ -12,4 +13,5 @@ export const makeRoutes = (app: Express): void => {
   router.post('/users', adaptRoute(makeSignUpHandler()))
   router.get('/users/:id', adaptRoute(makeGetUserController()))
   router.patch('/users/:id', adaptRoute(makeUpdateUserController()))
+  router.delete('/users/:id', adaptRoute(makeDeleteUserController()))
 }
