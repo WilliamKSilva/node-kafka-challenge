@@ -10,6 +10,13 @@ export class CreateOrderController implements IController {
       }
     }
 
+    if (!httpRequest.body.description) {
+      return {
+        code: 400,
+        body: new MissingFieldError('description')
+      }
+    }
+
     return null
   }
 }
