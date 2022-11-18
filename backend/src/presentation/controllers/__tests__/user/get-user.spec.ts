@@ -1,8 +1,8 @@
-import { mockedUserModel } from '../../../application/repositories/in-memory/user-repository'
-import { UserModel } from '../../../domain/models/user'
-import { IGetUserUseCase } from '../../../domain/usecases/user/get-user'
-import { InternalServerError } from '../../errors/internal-server-error'
-import { GetUserController } from '../user/get-user'
+import { mockedUserModel } from '../../../../application/repositories/in-memory/user-repository'
+import { UserModel } from '../../../../domain/models/user'
+import { IGetUserUseCase } from '../../../../domain/usecases/user/get-user'
+import { InternalServerError } from '../../../errors/internal-server-error'
+import { GetUserController } from '../../user/get-user'
 
 interface IMakeSut {
   sut: GetUserController

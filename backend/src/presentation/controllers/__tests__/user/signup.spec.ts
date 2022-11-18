@@ -1,9 +1,9 @@
-import { UserModel } from '../../../domain/models/user'
-import { IAddUserData, IAddUserUseCase } from '../../../domain/usecases/user/add-user'
-import { MissingFieldError } from '../../errors/missing-field-error'
-import { UserAlreadyExistsError } from '../../errors/user-already-exists-error'
-import { IController } from '../../protocols/http'
-import { SignUpController } from '../user/signup'
+import { UserModel } from '../../../../domain/models/user'
+import { IAddUserData, IAddUserUseCase } from '../../../../domain/usecases/user/add-user'
+import { MissingFieldError } from '../../../errors/missing-field-error'
+import { UserAlreadyExistsError } from '../../../errors/user-already-exists-error'
+import { IController } from '../../../protocols/http'
+import { SignUpController } from '../../user/signup'
 
 interface IMakeSut {
   sut: IController

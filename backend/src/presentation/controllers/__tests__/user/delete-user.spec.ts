@@ -1,6 +1,6 @@
-import { IDeleteUserUseCase } from '../../../domain/usecases/user/delete-user'
-import { InternalServerError } from '../../errors/internal-server-error'
-import { DeleteUserController } from '../user/delete-user'
+import { IDeleteUserUseCase } from '../../../../domain/usecases/user/delete-user'
+import { InternalServerError } from '../../../errors/internal-server-error'
+import { DeleteUserController } from '../../user/delete-user'
 
 interface IMakeSut {
   deleteUserUseCase: IDeleteUserUseCase
