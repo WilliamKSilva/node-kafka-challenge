@@ -100,4 +100,16 @@ describe('UserRepository', () => {
 
     expect(user).toMatchObject(userData)
   })
+
+  it('Should update a user on update method', async () => {
+    const usersCollection = await MongoHelper.getCollection('users')
+
+    const _id = new ObjectId(createdUserId)
+
+    await usersCollection.deleteOne({ _id })
+
+    const mongoUser = await usersCollection.findOne({ _id })
+
+    expect(mongoUser).toBeFalsy()
+  })
 })
