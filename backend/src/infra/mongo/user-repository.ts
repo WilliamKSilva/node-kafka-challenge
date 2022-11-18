@@ -86,4 +86,12 @@ export class MongoUserRepository implements IUserRepository {
 
     return user
   }
+
+  async delete (userId: string): Promise<void> {
+    const usersCollection = await MongoHelper.getCollection('users')
+
+    const _id = new ObjectId(userId)
+
+    await usersCollection.deleteOne({ _id })
+  }
 }
