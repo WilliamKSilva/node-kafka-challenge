@@ -1,5 +1,5 @@
 import { IAddOrderUseCase } from '../../../../domain/usecases/order/add-order'
-import { OrderRepositoryInMemomry } from '../../../repositories/in-memory/order-repository'
+import { mockOrder, OrderRepositoryInMemomry } from '../../../repositories/in-memory/order-repository'
 import { IOrderRepository } from '../../../repositories/order-repository'
 import { AddOrderUseCase } from '../../order/add-order'
 
@@ -45,5 +45,18 @@ describe('AddOrderUseCase', () => {
     const promise = sut.add(orderData)
 
     await expect(promise).rejects.toThrow()
+  })
+
+  it('Should return an order on success', async () => {
+    const { sut } = makeSut()
+
+    const orderData = {
+      name: 'test',
+      description: 'test'
+    }
+
+    const order = await sut.add(orderData)
+
+    expect(order).toEqual(mockOrder)
   })
 })
