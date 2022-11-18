@@ -26,6 +26,9 @@ export class CreateOrderController implements IController {
 
     const user = await this.addOrderUseCase.add(httpRequest.body)
 
-    return null
+    return {
+      code: 200,
+      body: user
+    }
   }
 }
