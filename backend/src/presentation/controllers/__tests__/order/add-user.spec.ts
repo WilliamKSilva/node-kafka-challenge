@@ -1,16 +1,35 @@
+import { OrderModel } from '../../../../domain/models/order'
+import { IAddOrderData, IAddOrderUseCase } from '../../../../domain/usecases/order/add-order'
 import { MissingFieldError } from '../../../errors/missing-field-error'
 import { IController } from '../../../protocols/http'
 import { CreateOrderController } from '../../order/add-order'
 
+const makeAddOrderUseCaseStub = (): IAddOrderUseCase => {
+  class AddOrderUseCaseStub implements IAddOrderUseCase {
+    async add (data: IAddOrderData): Promise<OrderModel> {
+      return await new Promise((resolve, reject) => resolve({
+        id: 'id',
+        name: 'test',
+        description: 'test'
+      }))
+    }
+  }
+
+  return new AddOrderUseCaseStub()
+}
+
 interface IMakeSut {
   sut: IController
+  addOrderUseCase: IAddOrderUseCase
 }
 
 const makeSut = (): IMakeSut => {
-  const sut = new CreateOrderController()
+  const addOrderUseCase = makeAddOrderUseCaseStub()
+  const sut = new CreateOrderController(addOrderUseCase)
 
   return {
-    sut
+    sut,
+    addOrderUseCase
   }
 }
 
@@ -41,5 +60,20 @@ describe('CreateUserController', () => {
 
     expect(httpResponse.code).toBe(400)
     expect(httpResponse.body).toEqual(new MissingFieldError('description'))
+  })
+
+  it('Should call AddOrderUseCase with the right data', async () => {
+    const { sut, addOrderUseCase } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'test',
+        description: 'test'
+      }
+    }
+
+    const addOrderUseCaseSpy = jest.spyOn(addOrderUseCase, 'add')
+    await sut.handle(httpRequest)
+
+    expect(addOrderUseCaseSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 })
