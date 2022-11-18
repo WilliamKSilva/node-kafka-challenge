@@ -1,5 +1,6 @@
 import { OrderModel } from '../../../../domain/models/order'
 import { IAddOrderData, IAddOrderUseCase } from '../../../../domain/usecases/order/add-order'
+import { InternalServerError } from '../../../errors/internal-server-error'
 import { MissingFieldError } from '../../../errors/missing-field-error'
 import { IController } from '../../../protocols/http'
 import { CreateOrderController } from '../../order/add-order'
@@ -77,7 +78,7 @@ describe('CreateUserController', () => {
     expect(addOrderUseCaseSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 
-  it('Should throws if AddOrderUseCase throws', async () => {
+  it('Should return 500 if AddOrderUseCase throws', async () => {
     const { sut, addOrderUseCase } = makeSut()
     const httpRequest = {
       body: {
@@ -87,9 +88,10 @@ describe('CreateUserController', () => {
     }
 
     jest.spyOn(addOrderUseCase, 'add').mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
-    const promise = sut.handle(httpRequest)
+    const httpResponse = await sut.handle(httpRequest)
 
-    await expect(promise).rejects.toThrow()
+    expect(httpResponse.code).toBe(500)
+    expect(httpResponse.body).toEqual(new InternalServerError())
   })
 
   it('Should return 200 on success', async () => {
