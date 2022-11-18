@@ -91,4 +91,23 @@ describe('CreateUserController', () => {
 
     await expect(promise).rejects.toThrow()
   })
+
+  it('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'test',
+        description: 'test'
+      }
+    }
+
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.code).toBe(200)
+    expect(httpResponse.body).toEqual({
+      id: 'id',
+      name: 'test',
+      description: 'test'
+    })
+  })
 })
