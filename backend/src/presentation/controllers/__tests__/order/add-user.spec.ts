@@ -28,4 +28,18 @@ describe('CreateUserController', () => {
     expect(httpResponse.code).toBe(400)
     expect(httpResponse.body).toEqual(new MissingFieldError('name'))
   })
+
+  it('Should return 400 if no descripion is provided', async () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'test'
+      }
+    }
+
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.code).toBe(400)
+    expect(httpResponse.body).toEqual(new MissingFieldError('description'))
+  })
 })
