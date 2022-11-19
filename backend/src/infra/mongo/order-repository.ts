@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb'
 import { IOrderRepository } from '../../application/repositories/order-repository'
 import { OrderModel, Status } from '../../domain/models/order'
 import { IAddOrderData } from '../../domain/usecases/order/add-order'
@@ -16,6 +17,23 @@ export class MongoOrderRepository implements IOrderRepository {
     const inserted = await ordersCollection.insertOne(orderData)
 
     const order = Object.assign({}, orderData, { id: inserted.insertedId.toJSON() })
+
+    return order
+  }
+
+  async find (orderId: string): Promise<OrderModel> {
+    const ordersCollection = await MongoHelper.getCollection('orders')
+
+    const _id = new ObjectId(orderId)
+
+    const mongoUser = await ordersCollection.findOne({ _id })
+
+    const order: OrderModel = {
+      id: mongoUser._id.toJSON(),
+      name: mongoUser.name,
+      description: mongoUser.description,
+      status: mongoUser.status
+    }
 
     return order
   }
