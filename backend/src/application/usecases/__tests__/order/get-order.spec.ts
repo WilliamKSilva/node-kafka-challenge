@@ -1,6 +1,6 @@
 import { IGetOrderUseCase } from '../../../../domain/usecases/order/get-order'
 import { OrderNotFoundError } from '../../../../presentation/errors/order-not-found-error'
-import { OrderRepositoryInMemory } from '../../../repositories/in-memory/order-repository'
+import { mockOrder, OrderRepositoryInMemory } from '../../../repositories/in-memory/order-repository'
 import { IOrderRepository } from '../../../repositories/order-repository'
 import { GetOrderUseCase } from '../../order/get-order'
 
@@ -51,5 +51,15 @@ describe('GetOrderUseCase', () => {
     const promise = sut.find(orderId)
 
     await expect(promise).rejects.toEqual(new OrderNotFoundError())
+  })
+
+  it('Should return an order on success', async () => {
+    const { sut } = makeSut()
+
+    const orderId = 'id'
+
+    const order = await sut.find(orderId)
+
+    expect(order).toEqual(mockOrder)
   })
 })
