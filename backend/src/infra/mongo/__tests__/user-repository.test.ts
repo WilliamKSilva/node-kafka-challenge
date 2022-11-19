@@ -28,7 +28,12 @@ describe('UserRepository', () => {
 
     createdUserId = inserted.insertedId.toJSON()
 
-    const user = Object.assign({}, userData, { id: inserted.insertedId })
+    const user: UserModel = {
+      id: inserted.insertedId.toJSON(),
+      name: userData.name,
+      email: userData.email,
+      password: userData.password
+    }
 
     expect(user.id).toBeTruthy()
     expect(user.name).toBe('test')

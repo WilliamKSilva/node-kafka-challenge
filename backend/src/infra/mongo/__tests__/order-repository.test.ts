@@ -28,7 +28,12 @@ describe('UserRepository', () => {
 
     createdOrderId = inserted.insertedId.toJSON()
 
-    const order = Object.assign({}, orderData, { id: inserted.insertedId.toJSON() })
+    const order: OrderModel = {
+      id: inserted.insertedId.toJSON(),
+      name: orderData.name,
+      description: orderData.description,
+      status: orderData.status
+    }
 
     expect(order.id).toBeTruthy()
     expect(order.name).toBe('test')
