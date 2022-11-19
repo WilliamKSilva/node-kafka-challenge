@@ -1,4 +1,5 @@
 import { IGetOrderUseCase } from '../../../../domain/usecases/order/get-order'
+import { OrderNotFoundError } from '../../../../presentation/errors/order-not-found-error'
 import { OrderRepositoryInMemory } from '../../../repositories/in-memory/order-repository'
 import { IOrderRepository } from '../../../repositories/order-repository'
 import { GetOrderUseCase } from '../../order/get-order'
@@ -39,5 +40,16 @@ describe('GetOrderUseCase', () => {
     const promise = sut.find(orderId)
 
     await expect(promise).rejects.toThrow()
+  })
+
+  it('Should throw an exception error if order does not exists', async () => {
+    const { sut, orderRepository } = makeSut()
+
+    const orderId = 'id'
+
+    jest.spyOn(orderRepository, 'find').mockResolvedValueOnce(new Promise((resolve, reject) => resolve(null)))
+    const promise = sut.find(orderId)
+
+    await expect(promise).rejects.toEqual(new OrderNotFoundError())
   })
 })
