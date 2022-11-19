@@ -1,5 +1,5 @@
 import { IAddOrderUseCase } from '../../../../domain/usecases/order/add-order'
-import { mockOrder, OrderRepositoryInMemomry } from '../../../repositories/in-memory/order-repository'
+import { mockOrder, OrderRepositoryInMemory } from '../../../repositories/in-memory/order-repository'
 import { IOrderRepository } from '../../../repositories/order-repository'
 import { AddOrderUseCase } from '../../order/add-order'
 
@@ -9,7 +9,7 @@ interface IMakeSut {
 }
 
 const makeSut = (): IMakeSut => {
-  const orderRepository = new OrderRepositoryInMemomry()
+  const orderRepository = new OrderRepositoryInMemory()
   const sut = new AddOrderUseCase(orderRepository)
 
   return {
