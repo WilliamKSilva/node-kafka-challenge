@@ -17,6 +17,6 @@ export class GetOrderUseCase implements IGetOrderUseCase {
       throw new OrderNotFoundError()
     }
 
-    return null
+    return order
   }
 }
