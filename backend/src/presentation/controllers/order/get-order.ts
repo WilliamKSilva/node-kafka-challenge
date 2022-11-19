@@ -15,7 +15,10 @@ export class GetOrderController implements IController {
 
       const order = await this.getOrderUseCase.find(id)
 
-      return null
+      return {
+        code: 200,
+        body: order
+      }
     } catch (error) {
       return {
         code: 500,
