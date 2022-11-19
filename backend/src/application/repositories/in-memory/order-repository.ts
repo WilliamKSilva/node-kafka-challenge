@@ -9,8 +9,12 @@ export const mockOrder = {
   status: Status.pending
 }
 
-export class OrderRepositoryInMemomry implements IOrderRepository {
+export class OrderRepositoryInMemory implements IOrderRepository {
   async add (data: IAddOrderData): Promise<OrderModel> {
+    return mockOrder
+  }
+
+  async find (orderId: string): Promise<OrderModel> {
     return mockOrder
   }
 }
