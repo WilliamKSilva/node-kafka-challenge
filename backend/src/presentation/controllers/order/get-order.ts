@@ -1,4 +1,5 @@
 import { IGetOrderUseCase } from '../../../domain/usecases/order/get-order'
+import { InternalServerError } from '../../errors/internal-server-error'
 import { HttpRequest, HttpResponse, IController } from '../../protocols/http'
 
 export class GetOrderController implements IController {
@@ -9,10 +10,17 @@ export class GetOrderController implements IController {
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const { id } = httpRequest.params
+    try {
+      const { id } = httpRequest.params
 
-    const order = await this.getOrderUseCase.find(id)
+      const order = await this.getOrderUseCase.find(id)
 
-    return null
+      return null
+    } catch (error) {
+      return {
+        code: 500,
+        body: new InternalServerError()
+      }
+    }
   }
 }
