@@ -1,5 +1,6 @@
 import { OrderModel, Status } from '../../../../domain/models/order'
 import { IGetOrderUseCase } from '../../../../domain/usecases/order/get-order'
+import { InternalServerError } from '../../../errors/internal-server-error'
 import { IController } from '../../../protocols/http'
 import { GetOrderController } from '../../order/get-order'
 
@@ -47,5 +48,21 @@ describe('GetOrderController', () => {
     await sut.handle(httpRequest)
 
     expect(getOrderUseCaseSpy).toHaveBeenCalledWith('id')
+  })
+
+  it('Should return 500 if GetOrderUseCase throws', async () => {
+    const { sut, getOrderUseCase } = makeSut()
+
+    const httpRequest = {
+      params: {
+        id: 'id'
+      }
+    }
+
+    jest.spyOn(getOrderUseCase, 'find').mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.code).toBe(500)
+    expect(httpResponse.body).toEqual(new InternalServerError())
   })
 })
