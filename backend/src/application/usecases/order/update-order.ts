@@ -1,5 +1,6 @@
 import { OrderModel } from '../../../domain/models/order'
 import { IUpdateOrderData, IUpdateOrderUseCase } from '../../../domain/usecases/order/update-order'
+import { OrderNotFoundError } from '../../../presentation/errors/order-not-found-error'
 import { IOrderRepository } from '../../repositories/order-repository'
 
 export class UpdateOrderUseCase implements IUpdateOrderUseCase {
@@ -10,6 +11,12 @@ export class UpdateOrderUseCase implements IUpdateOrderUseCase {
   }
 
   async update (data: IUpdateOrderData, orderId: string): Promise<OrderModel> {
+    const orderExists = await this.orderRepository.find(orderId)
+
+    if (!orderExists) {
+      throw new OrderNotFoundError()
+    }
+
     const order = await this.orderRepository.update(data, orderId)
 
     return null
