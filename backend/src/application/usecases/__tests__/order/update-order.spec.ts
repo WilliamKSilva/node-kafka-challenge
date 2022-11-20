@@ -24,4 +24,17 @@ describe('', () => {
 
     expect(orderRepositorySpy).toHaveBeenCalledWith(data, 'id')
   })
+
+  it('Should throw if order repository update method throws', async () => {
+    const { sut, orderRepository } = makeSut()
+
+    const data = {
+      description: 'test 1'
+    }
+
+    jest.spyOn(orderRepository, 'update').mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const promise = sut.update(data, 'id')
+
+    await expect(promise).rejects.toThrow()
+  })
 })
