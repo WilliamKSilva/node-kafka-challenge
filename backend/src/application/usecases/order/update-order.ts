@@ -19,6 +19,6 @@ export class UpdateOrderUseCase implements IUpdateOrderUseCase {
 
     const order = await this.orderRepository.update(data, orderId)
 
-    return null
+    return order
   }
 }
