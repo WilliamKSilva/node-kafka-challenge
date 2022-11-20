@@ -60,4 +60,35 @@ describe('UserRepository', () => {
     expect(order.description).toBe('test')
     expect(order.status).toBe(Status.pending)
   })
+
+  it('Should update an order', async () => {
+    const ordersCollection = await MongoHelper.getCollection('orders')
+    const updateOrderData = {
+      name: 'test 1',
+      description: 'test 1',
+      status: Status.completed
+    }
+
+    const _id = new ObjectId(createdOrderId)
+
+    await ordersCollection.updateOne({ _id }, {
+      $set: {
+        ...updateOrderData
+      }
+    })
+
+    const mongoUser = await ordersCollection.findOne({ _id })
+
+    const order: OrderModel = {
+      id: createdOrderId,
+      name: mongoUser.name,
+      description: mongoUser.description,
+      status: mongoUser.status
+    }
+
+    expect(order.id).toBeTruthy()
+    expect(order.name).toBe('test 1')
+    expect(order.description).toBe('test 1')
+    expect(order.status).toBe(Status.completed)
+  })
 })
