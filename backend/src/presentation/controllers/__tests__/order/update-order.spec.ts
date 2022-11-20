@@ -69,4 +69,29 @@ describe('UpdateOrderController', () => {
     expect(httpResponse.code).toBe(500)
     expect(httpResponse.body).toEqual(new InternalServerError())
   })
+
+  it('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest = {
+      body: {
+        name: 'test',
+        description: 'test',
+        status: Status.completed
+      },
+      params: {
+        id: 'id'
+      }
+    }
+
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.code).toBe(200)
+    expect(httpResponse.body).toEqual({
+      id: 'id',
+      name: 'test',
+      description: 'test',
+      status: Status.completed
+    })
+  })
 })
