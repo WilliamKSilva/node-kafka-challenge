@@ -1,4 +1,5 @@
 import { IUpdateOrderUseCase } from '../../../domain/usecases/order/update-order'
+import { InternalServerError } from '../../errors/internal-server-error'
 import { HttpRequest, HttpResponse, IController } from '../../protocols/http'
 
 export class UpdateOrderController implements IController {
@@ -9,10 +10,17 @@ export class UpdateOrderController implements IController {
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const { id } = httpRequest.params
+    try {
+      const { id } = httpRequest.params
 
-    const order = await this.updateOrderUseCase.update(httpRequest.body, id)
+      const order = await this.updateOrderUseCase.update(httpRequest.body, id)
 
-    return null
+      return null
+    } catch (error) {
+      return {
+        code: 500,
+        body: new InternalServerError()
+      }
+    }
   }
 }
