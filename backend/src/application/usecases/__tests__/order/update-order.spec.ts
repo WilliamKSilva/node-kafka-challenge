@@ -1,5 +1,5 @@
 import { OrderNotFoundError } from '../../../../presentation/errors/order-not-found-error'
-import { OrderRepositoryInMemory } from '../../../repositories/in-memory/order-repository'
+import { mockOrder, OrderRepositoryInMemory } from '../../../repositories/in-memory/order-repository'
 import { UpdateOrderUseCase } from '../../order/update-order'
 
 const makeSut = () => {
@@ -67,5 +67,17 @@ describe('', () => {
     const promise = sut.update(data, 'id')
 
     await expect(promise).rejects.toThrow()
+  })
+
+  it('Should return an order on success', async () => {
+    const { sut } = makeSut()
+
+    const data = {
+      description: 'test 1'
+    }
+
+    const order = await sut.update(data, 'id')
+
+    expect(order).toEqual(mockOrder)
   })
 })
