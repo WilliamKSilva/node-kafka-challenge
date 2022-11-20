@@ -13,6 +13,10 @@ export class UpdateOrderUseCase implements IUpdateOrderUseCase {
   async update (data: IUpdateOrderData, orderId: string): Promise<OrderModel> {
     const orderExists = await this.orderRepository.find(orderId)
 
+    if (!orderExists) {
+      throw new OrderNotFoundError()
+    }
+
     const order = await this.orderRepository.update(data, orderId)
 
     return null
