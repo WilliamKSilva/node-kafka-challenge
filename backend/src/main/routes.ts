@@ -2,6 +2,7 @@
 import { Express, Router } from 'express'
 import { makeCreateOrderController } from './factories/order/create-order-controller'
 import { makeGetOrderController } from './factories/order/get-order-controller'
+import { makeUpdateOrderController } from './factories/order/update-order-controller'
 import { makeDeleteUserController } from './factories/user/delete-user-factory'
 import { makeGetUserController } from './factories/user/get-user-factory'
 import { makeSignUpHandler } from './factories/user/signup-factory'
@@ -19,4 +20,5 @@ export const makeRoutes = (app: Express): void => {
 
   router.post("/orders", adaptRoute(makeCreateOrderController()))
   router.get("/orders/:id", adaptRoute(makeGetOrderController()))
+  router.patch("/orders/:id", adaptRoute(makeUpdateOrderController()))
 }
