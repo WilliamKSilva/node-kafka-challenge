@@ -1,5 +1,6 @@
 import { OrderModel, Status } from '../../../../domain/models/order'
 import { IUpdateOrderData, IUpdateOrderUseCase } from '../../../../domain/usecases/order/update-order'
+import { InternalServerError } from '../../../errors/internal-server-error'
 import { UpdateOrderController } from '../../order/update-order'
 
 const makeUpdateOrderUseCaseStub = (): IUpdateOrderUseCase => {
@@ -46,5 +47,26 @@ describe('UpdateOrderController', () => {
     await sut.handle(httpRequest)
 
     expect(updateOrderUseCaseSpy).toHaveBeenCalledWith(httpRequest.body, 'id')
+  })
+
+  it('Should return 500 if UpdateOrderUseCase throws', async () => {
+    const { sut, updateOrderUseCase } = makeSut()
+
+    const httpRequest = {
+      body: {
+        name: 'test',
+        description: 'test',
+        status: Status.completed
+      },
+      params: {
+        id: 'id'
+      }
+    }
+
+    jest.spyOn(updateOrderUseCase, 'update').mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.code).toBe(500)
+    expect(httpResponse.body).toEqual(new InternalServerError())
   })
 })
