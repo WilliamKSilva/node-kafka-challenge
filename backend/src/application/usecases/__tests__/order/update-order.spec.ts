@@ -12,6 +12,21 @@ const makeSut = () => {
 }
 
 describe('', () => {
+  it('Should call order repository find method with the right data', async () => {
+    const { sut, orderRepository } = makeSut()
+
+    const data = {
+      description: 'test 1'
+    }
+
+    const orderId = 'id'
+
+    const orderRepositorySpy = jest.spyOn(orderRepository, 'find')
+    await sut.update(data, orderId)
+
+    expect(orderRepositorySpy).toHaveBeenCalledWith(orderId)
+  })
+
   it('Should call order repository update method with the right data', async () => {
     const { sut, orderRepository } = makeSut()
 
