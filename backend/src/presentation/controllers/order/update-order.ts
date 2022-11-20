@@ -15,7 +15,10 @@ export class UpdateOrderController implements IController {
 
       const order = await this.updateOrderUseCase.update(httpRequest.body, id)
 
-      return null
+      return {
+        code: 200,
+        body: order
+      }
     } catch (error) {
       return {
         code: 500,
