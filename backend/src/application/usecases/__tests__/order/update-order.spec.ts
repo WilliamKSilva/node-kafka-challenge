@@ -1,3 +1,4 @@
+import { OrderNotFoundError } from '../../../../presentation/errors/order-not-found-error'
 import { OrderRepositoryInMemory } from '../../../repositories/in-memory/order-repository'
 import { UpdateOrderUseCase } from '../../order/update-order'
 
@@ -25,6 +26,21 @@ describe('', () => {
     await sut.update(data, orderId)
 
     expect(orderRepositorySpy).toHaveBeenCalledWith(orderId)
+  })
+
+  it('Should throw an exception if order not exists', async () => {
+    const { sut, orderRepository } = makeSut()
+
+    const data = {
+      description: 'test 1'
+    }
+
+    const orderId = 'id'
+
+    jest.spyOn(orderRepository, 'find').mockResolvedValueOnce(new Promise((resolve, reject) => resolve(null)))
+    const promise = sut.update(data, orderId)
+
+    await expect(promise).rejects.toEqual(new OrderNotFoundError())
   })
 
   it('Should call order repository update method with the right data', async () => {
